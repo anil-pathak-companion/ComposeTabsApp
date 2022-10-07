@@ -8,12 +8,12 @@ buildscript {
         hilt_navigation_version = '1.0.0'
         retrofit_version = "2.9.0"
         okhttp_version = "5.0.0-alpha.3"
-        gson_version = "2.9.0"
         system_ui_controller_version = "0.24.13-rc"
         room_version = "2.4.3"
         jetpack_constraint_layout_version = "1.0.0-beta02"
         mockito_version = "4.0.0"
         mockk_version = "1.12.2"
+        moshi_version = "1.12.0"
     }
     repositories {
         google()

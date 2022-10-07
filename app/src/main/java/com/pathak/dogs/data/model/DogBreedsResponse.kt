@@ -1,11 +1,13 @@
 package com.pathak.dogs.data.model
 
-
-import com.google.gson.annotations.SerializedName
+import com.squareup.moshi.Json
 
 data class DogBreedsResponse(
-    @SerializedName("breeds")
-    val breeds: Breeds,
-    @SerializedName("status")
-    val status: String = ""
-)
+    @Json(name = "message")
+    val breedsMap: Map<String, List<String>>
+) {
+    fun getBreeds(): List<BreedsDTO> =
+        breedsMap.entries.map {
+            BreedsDTO(breedName = it.key, subBreeds = it.value)
+        }
+}

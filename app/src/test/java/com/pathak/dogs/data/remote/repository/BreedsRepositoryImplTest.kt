@@ -1,7 +1,6 @@
 package com.pathak.dogs.data.remote.repository
 
 import com.pathak.dogs.data.base.Result
-import com.pathak.dogs.data.model.Breeds
 import com.pathak.dogs.data.model.DogBreedsResponse
 import com.pathak.dogs.data.remote.retrofit.DogBreedApiService
 import kotlinx.coroutines.test.runTest
@@ -13,22 +12,29 @@ import org.mockito.kotlin.mock
 
 internal class BreedsRepositoryTest {
 
-    val dogBreedService = mock<DogBreedApiService> {
+    private val dogBreedService = mock<DogBreedApiService> {
         onBlocking { getBreeds() } doReturn getBreedsResponse()
     }
-    val breedsRepo: BreedsRepository = BreedsRepositoryImpl(dogBreedService)
+    private val breedsRepo: BreedsRepository = BreedsRepositoryImpl(dogBreedService)
 
     @Test
     fun `getAllBreeds Return List of Breeds`() = runTest {
         val response = breedsRepo.getAllBreeds()
-        Assert.assertEquals(Result.Success(getBreedsResponse().breeds), response)
+        Assert.assertEquals(Result.Success(getBreedsResponse().getBreeds()), response)
         if (response is Result.Success) {
             Assert.assertEquals(
-                response.data.affenpinscher,
-                getBreedsResponse().breeds.affenpinscher
+                response.data.first().breedName,
+                getBreedsResponse().getBreeds().first().breedName
             )
         }
     }
 
-    private fun getBreedsResponse() = DogBreedsResponse(breeds = Breeds())
+    private fun getBreedsResponse() =
+        DogBreedsResponse(
+            breedsMap = mapOf(
+                Pair("Tyler", listOf("Golden", "Big")),
+                Pair("Tyler2", listOf("Golden", "Big")),
+                Pair("Tyler3", listOf("Golden", "Big"))
+            )
+        )
 }
