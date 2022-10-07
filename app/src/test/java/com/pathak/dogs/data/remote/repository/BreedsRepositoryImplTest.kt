@@ -3,6 +3,8 @@ package com.pathak.dogs.data.remote.repository
 import com.pathak.dogs.data.base.Result
 import com.pathak.dogs.data.model.DogBreedsResponse
 import com.pathak.dogs.data.remote.retrofit.DogBreedApiService
+import com.pathak.dogs.data.repository.BreedsRepository
+import com.pathak.dogs.data.repository.BreedsRepositoryImpl
 import kotlinx.coroutines.test.runTest
 import org.junit.Assert
 import org.junit.Test

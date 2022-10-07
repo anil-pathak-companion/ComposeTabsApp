@@ -1,5 +1,6 @@
 package com.pathak.dogs.ui.common
 
+import android.util.Log
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
@@ -9,7 +10,10 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.tooling.preview.Preview
+import coil.map.Mapper
+import coil.request.Options
 import com.pathak.dogs.ui.theme.Purple80
+import com.squareup.moshi.Json
 
 @Composable
 fun LoadingView(modifier: Modifier = Modifier) {
@@ -27,3 +31,13 @@ fun LoadingView(modifier: Modifier = Modifier) {
 fun LoaderPreview() {
     LoadingView(modifier = Modifier.fillMaxSize())
 }
+
+class ItemMapper : Mapper<BreedImageResponse, String> {
+    override fun map(response: BreedImageResponse, options: Options): String {
+        val url = response.url
+        Log.d("Url is", url)
+        return url
+    }
+}
+
+data class BreedImageResponse(@Json(name = "message") val url: String)
