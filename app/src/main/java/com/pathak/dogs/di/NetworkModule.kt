@@ -1,10 +1,10 @@
 package com.pathak.dogs.di
 
 import android.content.Context
+import com.google.gson.Gson
+import com.google.gson.GsonBuilder
 import com.pathak.dogs.BuildConfig
 import com.pathak.dogs.data.remote.retrofit.DogBreedApiService
-import com.squareup.moshi.Moshi
-import com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -13,19 +13,18 @@ import dagger.hilt.components.SingletonComponent
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
-import retrofit2.converter.moshi.MoshiConverterFactory
+import retrofit2.converter.gson.GsonConverterFactory
 import java.util.concurrent.TimeUnit
 import javax.inject.Singleton
 
 @Module
 @InstallIn(SingletonComponent::class)
 class NetworkModule {
+
     @Singleton
     @Provides
-    fun provideMoshi(): Moshi {
-        return Moshi.Builder()
-            .add(KotlinJsonAdapterFactory())
-            .build()
+    fun provideGson(): Gson {
+        return GsonBuilder().setLenient().create()
     }
 
     @Singleton
@@ -52,13 +51,12 @@ class NetworkModule {
     @Provides
     fun provideRetrofitBuilder(
         client: OkHttpClient,
-        moshi: Moshi,
         @ApplicationContext context: Context
     ): Retrofit {
         return Retrofit.Builder()
             .baseUrl("https://dog.ceo/")
             .client(client)
-            .addConverterFactory(MoshiConverterFactory.create(moshi))
+            .addConverterFactory(GsonConverterFactory.create())
             .build()
     }
 

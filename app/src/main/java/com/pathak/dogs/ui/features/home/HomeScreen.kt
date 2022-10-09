@@ -39,8 +39,8 @@ fun HomeScreen(viewModel: HomeViewModel, navController: NavController) {
         is ScreenState.Success -> {
             Log.d("HomeScreen", "HomeScreen: ${state.breeds?.size.toString()}")
             state.breeds?.let { breeds ->
-                Breeds(breeds = breeds) { uuid, fav ->
-                    navController.navigate(NavGraph.createNavLink(uuid.toString()))
+                Breeds(breeds = breeds) { breed, fav ->
+                    navController.navigate(NavGraph.createNavLink(breed))
                 }
             } ?: run {
                 LoadingView(modifier = Modifier.fillMaxSize())

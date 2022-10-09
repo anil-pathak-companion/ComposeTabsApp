@@ -26,25 +26,23 @@ class HomeViewModel @Inject constructor(private val getBreedsUseCase: GetBreedsU
 
     init {
         viewModelScope.launch {
-            getBreedsUseCase().let { result ->
-                when (result) {
-                    is Result.Success -> {
-                        _viewModelState.update {
-                            it.copy(
-                                screenState = ScreenState.Success,
-                                breeds = result.data,
-                                error = null
-                            )
-                        }
+            when (val result = getBreedsUseCase()) {
+                is Result.Success -> {
+                    _viewModelState.update {
+                        it.copy(
+                            screenState = ScreenState.Success,
+                            breeds = result.data,
+                            error = null
+                        )
                     }
-                    is Result.Error -> {
-                        _viewModelState.update {
-                            it.copy(
-                                screenState = ScreenState.Error,
-                                breeds = null,
-                                error = result.exception.localizedMessage
-                            )
-                        }
+                }
+                is Result.Error -> {
+                    _viewModelState.update {
+                        it.copy(
+                            screenState = ScreenState.Error,
+                            breeds = null,
+                            error = result.exception.localizedMessage
+                        )
                     }
                 }
             }

@@ -17,8 +17,8 @@ interface BreedDao {
     @Query("Select * from breed")
     suspend fun getBreeds(): List<BreedEntity>
 
-    @Query("Select * from breed where isFav=:isFav")
-    suspend fun getFavBreeds(isFav: Boolean = true): List<BreedEntity>
+    @Query("Select * from breed where id=:breedId")
+    suspend fun getBreedById(breedId: UUID): BreedEntity?
 
     @Query("Update breed set isFav=:isFav where id=:id")
     suspend fun updateFavStatus(id: UUID, isFav: Boolean)

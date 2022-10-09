@@ -19,10 +19,22 @@ class BreedsRepositoryImpl @Inject constructor(
         Result.Error(e)
     }
 
+    override suspend fun getBreedById(breedId: String): Result<Breed> = try {
+        localDataSource.getBreedDetails(breedId = breedId)?.let { breed ->
+            Result.Success(breed)
+        } ?: Result.Error(java.lang.Exception())
+    } catch (e: Exception) {
+        Result.Error(e)
+    }
+
     override suspend fun getBreedImage(name: String): Result<String> = try {
         val response = remoteDataSource.getBreedImage(breedName = name)
         Result.Success(response)
     } catch (e: Exception) {
         Result.Error(e)
+    }
+
+    override suspend fun updateFavStatusByBreedId(breedId: String, isFav: Boolean) {
+        localDataSource.updateFavState(breedId = breedId, isFav = isFav)
     }
 }

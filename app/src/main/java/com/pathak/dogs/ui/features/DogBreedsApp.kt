@@ -1,14 +1,14 @@
 package com.pathak.dogs.ui.features
 
+import android.os.Build
 import androidx.compose.runtime.Composable
-import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
+import com.pathak.dogs.data.model.Breed
 import com.pathak.dogs.ui.features.NavGraph.BreedDetail
 import com.pathak.dogs.ui.features.NavGraph.Home
-import com.pathak.dogs.ui.features.NavGraphArguments.BreedId
 import com.pathak.dogs.ui.features.breedDetails.BreedDetails
 import com.pathak.dogs.ui.features.home.HomeScreen
 
@@ -19,15 +19,20 @@ fun DogBreedsApp() {
         composable(Home) {
             HomeScreen(navController)
         }
-        composable("$BreedDetail{breedId}", arguments = listOf(
-            navArgument(BreedId) {
-                type = NavType.StringType
+        composable("$BreedDetail?breed={breed}", arguments = listOf(
+            navArgument("breed") {
+                type = BreedType()
             }
         )) {
-            BreedDetails(
-                breedId = it.arguments?.getString(BreedId).toString(),
-                navController = navController
-            )
+            (if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+                it.arguments?.getParcelable("breed", Breed::class.java)
+            } else {
+                it.arguments?.getParcelable("breed")
+            })?.let { breed ->
+                BreedDetails(
+                    breed = breed
+                )
+            }
         }
     }
 }

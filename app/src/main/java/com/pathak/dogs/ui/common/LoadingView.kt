@@ -12,8 +12,8 @@ import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.tooling.preview.Preview
 import coil.map.Mapper
 import coil.request.Options
+import com.google.gson.annotations.SerializedName
 import com.pathak.dogs.ui.theme.Purple80
-import com.squareup.moshi.Json
 
 @Composable
 fun LoadingView(modifier: Modifier = Modifier) {
@@ -40,4 +40,4 @@ class ItemMapper : Mapper<BreedImageResponse, String> {
     }
 }
 
-data class BreedImageResponse(@Json(name = "message") val url: String)
+data class BreedImageResponse(@SerializedName("message") val url: String)

@@ -37,7 +37,7 @@ import java.util.*
 @Composable
 fun Breeds(
     breeds: List<Breed>,
-    onFavStatusChanged: (breedId: UUID, isFav: Boolean) -> Unit
+    onFavStatusChanged: (breed: Breed, isFav: Boolean) -> Unit
 ) {
     LazyColumn(
         modifier = Modifier.fillMaxWidth()
@@ -49,7 +49,7 @@ fun Breeds(
 }
 
 @Composable
-fun BreedCell(breedsDTO: Breed, onFavStatusChanged: (breedId: UUID, isFav: Boolean) -> Unit) {
+fun BreedCell(breedsDTO: Breed, onFavStatusChanged: (breed: Breed, isFav: Boolean) -> Unit) {
     Card(
         modifier = Modifier
             .padding(16.dp)
@@ -119,7 +119,7 @@ fun BreedCell(breedsDTO: Breed, onFavStatusChanged: (breedId: UUID, isFav: Boole
             )
             Spacer(modifier = Modifier.width(20.dp))
             FavouriteToggle(isFav = false, onCheckedChange = { isFav ->
-                onFavStatusChanged(UUID.randomUUID(), isFav)
+                onFavStatusChanged(breedsDTO, isFav)
             })
         }
     }
@@ -135,7 +135,7 @@ fun BreedsCellPreview() {
             subBreeds = listOf("DOP", "Big dog"),
             isFav = false
         ),
-        onFavStatusChanged = { uuid: UUID, b: Boolean -> })
+        onFavStatusChanged = { uuid: Breed, b: Boolean -> })
 }
 
 class ItemMapper : Mapper<BreedImageResponse, String> {
